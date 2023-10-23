@@ -5,6 +5,7 @@ Project by Koal Casler
 
 */
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,84 +15,31 @@ namespace HPSystem
 {
     internal class Program
     {
-        static int Health;
-        static string HealthStatus;
-        static int Shield;
-        static int Lives;
-        static int Level;
-        static int EXP;
+        static int health;
+        static string healthStatus;
+        static int shield;
+        static int lives;
+        static int level;
+        static int xp;
         static string StarLine;
 
         static void Main(string[] args)
         {
-            // The Game!
-            StartUp();
-            ShowHUD();
-            Next();
-            TakeDamage(50);
-            IncreaseEXP(110);
-            ShowHUD();
-            Next();
-            TakeDamage(-10);
-            IncreaseEXP(-110);
-            ShowHUD();
-            Next();
-            TakeDamage(100);
-            IncreaseEXP(210);
-            ShowHUD();
-            Next();
-            ShowHUD();
-            Next();
-            Heal(50);
-            RegenerateShield(50);
-            ShowHUD();
-            Next();
-            Heal(-10);
-            RegenerateShield(-10);
-            ShowHUD();
-            Next();
-            TakeDamage(100); 
-            ShowHUD();
-            Next();
-            TakeDamage(300);
-            ShowHUD();
-            Next();
-            TakeDamage(175);
-            ShowHUD();
-            Next();
-            TakeDamage(175);
-            ShowHUD();
-            Next();
-            TakeDamage(175);
-            ShowHUD();
-            Next();
-            TakeDamage(175);
-            ShowHUD();
-            Next();
-
-
-        }
-        static void StartUp()
-        {
-            //Sets base Values
-            EXP = 0;
-            Level = 1;
-            Health = 100;
-            Shield = 100;
-            Lives = 3;
-            StarLine = "*******************************************";
+            UnitTestHealthSystem();
+            //UnitTestXPSystem();
         }
         static void ShowHUD()
         {
             //Displays HUD in Console
+            StarLine = "*******************************************";
             HealthString();
             Console.WriteLine(StarLine);
-            Console.WriteLine(string.Format("Your health is at {0}%", Health));
-            Console.WriteLine(string.Format("Your heath status is: {0}", HealthStatus));
-            Console.WriteLine(string.Format("Your Shield is at {0}%", Shield));
-            Console.WriteLine(string.Format("You have {0} Lives remaining.", Lives));
-            Console.WriteLine(string.Format("You are level {0}!", Level));
-            Console.WriteLine(string.Format("Your EXP: {0}", EXP));
+            Console.WriteLine(string.Format("Your health is at {0}%", health));
+            Console.WriteLine(string.Format("Your heath status is: {0}", healthStatus));
+            Console.WriteLine(string.Format("Your shield is at {0}%", shield));
+            Console.WriteLine(string.Format("You have {0} lives remaining.", lives));
+            Console.WriteLine(string.Format("You are level {0}!", level));
+            Console.WriteLine(string.Format("Your xp: {0}", xp));
             Console.WriteLine(StarLine);
         }
         static void Next()
@@ -100,38 +48,37 @@ namespace HPSystem
             Console.WriteLine("Press any key to continue.");
             Console.ReadKey();
         }
-        static void TakeDamage(int Damage)
+        static void TakeDamage(int damage)
         {
             // Does damage with shield overflow
-            if (Damage <= 0)
+            if (damage <= 0)
             {
                 Console.WriteLine("Damage Cannot Be 0 or less.");
                 ShowHUD();
                 return;
             }
-            else
+            if (damage > 0)
             {
-                Console.WriteLine(string.Format("You took {0} Damage!", Damage));
-                if(Shield > 0)
+                Console.WriteLine(string.Format("You took {0} Damage!", damage));
+                if(shield > 0)
                 {
-                    Shield -= Damage;
-                    if(Shield < 0)
+                    shield -= damage;
+                    if(shield < 0)
                     {
-                        Health += Shield;
-                        Shield = 0;
+                        health += shield;
+                        shield = 0;
                     }
                 }
                 else
                 {
-                    Shield = 0;
-                    Health -= Damage;
+                    health -= damage;
                 }
-                if(Health <= 0)
+                if(health <= 0)
                 {
-                    Health = 0;
+                    health = 0;
                     ShowHUD();
-                    Revive();
-                }   
+                }
+                ShowHUD();
             }
         }
         static void Heal(int HpGain)
@@ -142,86 +89,262 @@ namespace HPSystem
                 Console.WriteLine("You cannot heal 0 or a Negative.");
                 return;
             }
-            Health += HpGain;
+            health += HpGain;
             Console.WriteLine(string.Format("You gained {0} Hp!", HpGain));
-            if(Health > 100)
+            if(health > 100)
             {
-                Health = 100;
+                health = 100;
             }
         }
         static void RegenerateShield(int ShieldGain)
         {
-            // Regenerates Shield for player
+            // Regenerates shield for player
             if(ShieldGain <= 0)
             {
                 Console.WriteLine("You cannot regen 0 or a Negative.");
                 return;
             }
-            Shield += ShieldGain;
-            Console.WriteLine(string.Format("You Regained {0} Shield!", ShieldGain));
-            if(Shield > 100)
+            shield += ShieldGain;
+            Console.WriteLine(string.Format("You Regained {0} shield!", ShieldGain));
+            if(shield > 100)
             {
-                Shield = 100;
+                shield = 100;
             }
         }
         static void Revive()
         {
             // Revives player
-            Health = 100;
-            Shield = 100;
-            Lives -= 1;
-            if(Lives <= 0)
+            health = 100;
+            shield = 100;
+            lives -= 1;
+            if(lives <= 0)
             {
                 Console.WriteLine("You have lost, press any key to exit.");
-                Health = 0;
-                Shield = 0;
+                health = 0;
+                shield = 0;
                 ShowHUD();
                 Console.ReadKey();
                 Environment.Exit(0);
             }
         }
-        static void IncreaseEXP(int EXPGain)
+        static void IncreaseXP(int EXPGain)
         {
-            // Increases EXP and level 
+            // Increases xp and level 
             if(EXPGain <= 0)
             {
-                Console.WriteLine("You cannot lose EXP...");
+                Console.WriteLine("You cannot lose xp...");
                 return;
             }
-            EXP += EXPGain;
-            Console.WriteLine(string.Format("You gained {0} EXP!", EXPGain));
-            if(EXP >= (Level * 100) && EXP < (Level * 200))
+            xp += EXPGain;
+            Console.WriteLine(string.Format("You gained {0} xp!", EXPGain));
+            if (xp >= (level * 100) && xp < (level * 200))
             {
-                Level += 1;
+                level += 1;
             }
         } 
         static void HealthString()
         {
             // Sets health status string
-            if(Health == 100)
+            if(health == 100)
             {
-                HealthStatus = "Perfect!";
+                healthStatus = "Perfect!";
             }
-            if(Health < 100 && Health >= 75)
+            if(health < 100 && health >= 75)
             {
-                HealthStatus = "Healthy";
+                healthStatus = "Healthy";
             }
-            if(Health < 75 && Health >= 50)
+            if(health < 75 && health >= 50)
             {
-                HealthStatus = "Hurt";
+                healthStatus = "Hurt";
             }
-            if(Health < 50 && Health >= 25)
+            if(health < 50 && health >= 25)
             {
-                HealthStatus = "Badly Hurt";
+                healthStatus = "Badly Hurt";
             }
-            if(Health < 25 && Health >= 1)
+            if(health < 25 && health >= 1)
             {
-                HealthStatus = "Critical!";
+                healthStatus = "Critical!";
             }
-            if(Health <= 0)
+            if(health <= 0)
             {
-                HealthStatus = "Dead!";
+                healthStatus = "Dead!";
             }
+        }
+        static void UnitTestHealthSystem()
+        {
+            Debug.WriteLine("Unit testing health System started...");
+
+            // TakeDamage()
+
+            // TakeDamage() - only shield
+            shield = 100;
+            health = 100;
+            lives = 3;
+            TakeDamage(10);
+            Debug.Assert(shield == 90);
+            Debug.Assert(health == 100);
+            Debug.Assert(lives == 3);
+
+            // TakeDamage() - shield and health
+            shield = 10;
+            health = 100;
+            lives = 3;
+            TakeDamage(50);
+            Debug.Assert(shield == 0);
+            Debug.Assert(health == 60);
+            Debug.Assert(lives == 3);
+
+            // TakeDamage() - only health
+            shield = 0;
+            health = 50;
+            lives = 3;
+            TakeDamage(10);
+            Debug.Assert(shield == 0);
+            Debug.Assert(health == 40);
+            Debug.Assert(lives == 3);
+
+            // TakeDamage() - health and lives
+            shield = 0;
+            health = 10;
+            lives = 3;
+            TakeDamage(25);
+            Debug.Assert(shield == 0);
+            Debug.Assert(health == 0);
+            Debug.Assert(lives == 3);
+
+            // TakeDamage() - shield, health, and lives
+            shield = 5;
+            health = 100;
+            lives = 3;
+            TakeDamage(110);
+            Debug.Assert(shield == 0);
+            Debug.Assert(health == 0);
+            Debug.Assert(lives == 3);
+
+            // TakeDamage() - negative input
+            shield = 50;
+            health = 50;
+            lives = 3;
+            TakeDamage(-10);
+            Debug.Assert(shield == 50);
+            Debug.Assert(health == 50);
+            Debug.Assert(lives == 3);
+
+            // Heal()
+            
+            // Heal() - normal
+            shield = 0;
+            health = 90;
+            lives = 3;
+            Heal(5);
+            Debug.Assert(shield == 0);
+            Debug.Assert(health == 95);
+            Debug.Assert(lives == 3);
+
+            // Heal() - already max health
+            shield = 90;
+            health = 100;
+            lives = 3;
+            Heal(5);
+            Debug.Assert(shield == 90);
+            Debug.Assert(health == 100);
+            Debug.Assert(lives == 3);
+            
+            // Heal() - negative input
+            shield = 50;
+            health = 50;
+            lives = 3;
+            Heal(-10);
+            Debug.Assert(shield == 50);
+            Debug.Assert(health == 50);
+            Debug.Assert(lives == 3);
+
+            // RegenerateShield()
+
+            // RegenerateShield() - normal
+            shield = 50;
+            health = 100;
+            lives = 3;
+            RegenerateShield(10);
+            Debug.Assert(shield == 60);
+            Debug.Assert(health == 100);
+            Debug.Assert(lives == 3);
+
+            // RegenerateShield() - already max shield
+            shield = 100;
+            health = 100;
+            lives = 3;
+            RegenerateShield(10);
+            Debug.Assert(shield == 100);
+            Debug.Assert(health == 100);
+            Debug.Assert(lives == 3);
+
+            // RegenerateShield() - negative input
+            shield = 50;
+            health = 50;
+            lives = 3;
+            RegenerateShield(-10);
+            Debug.Assert(shield == 50);
+            Debug.Assert(health == 50);
+            Debug.Assert(lives == 3);
+
+            // Revive()
+
+            // Revive()
+            shield = 0;
+            health = 0;
+            lives = 2;
+            Revive();
+            Debug.Assert(shield == 100);
+            Debug.Assert(health == 100);
+            Debug.Assert(lives == 1);
+
+            Debug.WriteLine("Unit testing health System completed.");
+            Console.Clear();
+        }
+        static void UnitTestXPSystem()
+        {
+            Debug.WriteLine("Unit testing XP / level Up System started...");
+
+            // IncreaseXP()
+
+            // IncreaseXP() - no level up; remain at level 1
+            xp = 0;
+            level = 1;
+            IncreaseXP(10);
+            Debug.Assert(xp == 10);
+            Debug.Assert(level == 1);
+
+            // IncreaseXP() - level up to level 2 (costs 100 xp)
+            xp = 0;
+            level = 1;
+            IncreaseXP(105);
+            Debug.Assert(xp == 5);
+            Debug.Assert(level == 2);
+
+            // IncreaseXP() - level up to level 3 (costs 200 xp)
+            xp = 0;
+            level = 2;
+            IncreaseXP(210);
+            Debug.Assert(xp == 10);
+            Debug.Assert(level == 3);
+
+            // IncreaseXP() - level up to level 4 (costs 300 xp)
+            xp = 0;
+            level = 3;
+            IncreaseXP(315);
+            Debug.Assert(xp == 15);
+            Debug.Assert(level == 4);
+
+            // IncreaseXP() - level up to level 5 (costs 400 xp)
+            xp = 0;
+            level = 4;
+            IncreaseXP(499);
+            Debug.Assert(xp == 99);
+            Debug.Assert(level == 5);
+
+            Debug.WriteLine("Unit testing XP / level Up System completed.");
+            Console.Clear();
         }
     }
 }
