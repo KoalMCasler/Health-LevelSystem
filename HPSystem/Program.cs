@@ -22,16 +22,71 @@ namespace HPSystem
         static int level;
         static int xp;
         static string StarLine;
+        static int xpCost = 100;
 
-        static void Main(string[] args)
+        static void Main()
         {
             UnitTestHealthSystem();
-            //UnitTestXPSystem();
+            UnitTestXPSystem();
+            Console.WriteLine("Code test complete!");
+            Console.ReadKey();
+            StartUp();
+            ShowHUD();
+            Next();
+            TakeDamage(50);
+            IncreaseXP(110);
+            ShowHUD();
+            Next();
+            TakeDamage(-10);
+            IncreaseXP(-110);
+            ShowHUD();
+            Next();
+            TakeDamage(100);
+            IncreaseXP(210);
+            ShowHUD();
+            Next();
+            ShowHUD();
+            Next();
+            Heal(50);
+            RegenerateShield(50);
+            ShowHUD();
+            Next();
+            Heal(-10);
+            RegenerateShield(-10);
+            ShowHUD();
+            Next();
+            TakeDamage(100); 
+            ShowHUD();
+            Next();
+            TakeDamage(300);
+            ShowHUD();
+            Next();
+            TakeDamage(175);
+            ShowHUD();
+            Next();
+            TakeDamage(175);
+            ShowHUD();
+            Next();
+            TakeDamage(175);
+            ShowHUD();
+            Next();
+            TakeDamage(175);
+            ShowHUD();
+            Next();
+        }
+        static void StartUp()
+        {
+            //Sets base Values
+            xp = 0;
+            level = 1;
+            health = 100;
+            shield = 100;
+            lives = 3;
+            StarLine = "*******************************************";
         }
         static void ShowHUD()
         {
             //Displays HUD in Console
-            StarLine = "*******************************************";
             HealthString();
             Console.WriteLine(StarLine);
             Console.WriteLine(string.Format("Your health is at {0}%", health));
@@ -129,6 +184,7 @@ namespace HPSystem
         }
         static void IncreaseXP(int EXPGain)
         {
+            
             // Increases xp and level 
             if(EXPGain <= 0)
             {
@@ -137,9 +193,12 @@ namespace HPSystem
             }
             xp += EXPGain;
             Console.WriteLine(string.Format("You gained {0} xp!", EXPGain));
-            if (xp >= (level * 100) && xp < (level * 200))
+            if(xp >= xpCost)
             {
                 level += 1;
+                Console.WriteLine("You gained a level!");
+                xp -= xpCost;
+                xpCost += xpCost;
             }
         } 
         static void HealthString()
