@@ -22,15 +22,14 @@ namespace HPSystem
         static int level;
         static int xp;
         static string StarLine;
-        static int xpCostBase;
+        static int xpCostBase = 100;
         static int xpCost;
 
         static void Main()
         {
-            xpCostBase = 100;
             UnitTestHealthSystem();
             UnitTestXPSystem();
-            Console.WriteLine("Code test complete!");
+            Console.WriteLine("Code test complete! Press any key to start showcase!");
             Console.ReadKey();
             StartUp();
             ShowHUD();
