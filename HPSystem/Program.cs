@@ -36,14 +36,17 @@ namespace HPSystem
             ShowHUD();
             Next();
             TakeDamage(50);
+            Revive();
             IncreaseXP(110);
             ShowHUD();
             Next();
             TakeDamage(-10);
+            Revive();
             IncreaseXP(-110);
             ShowHUD();
             Next();
             TakeDamage(100);
+            Revive();
             IncreaseXP(210);
             ShowHUD();
             Next();
@@ -58,21 +61,27 @@ namespace HPSystem
             ShowHUD();
             Next();
             TakeDamage(100); 
+            Revive();
             ShowHUD();
             Next();
             TakeDamage(300);
+            Revive();
             ShowHUD();
             Next();
             TakeDamage(175);
+            Revive();
             ShowHUD();
             Next();
             TakeDamage(175);
+            Revive();
             ShowHUD();
             Next();
             TakeDamage(175);
+            Revive();
             ShowHUD();
             Next();
             TakeDamage(175);
+            Revive();
             ShowHUD();
             Next();
         }
@@ -170,10 +179,14 @@ namespace HPSystem
         }
         static void Revive()
         {
-            // Revives player
-            health = 100;
-            shield = 100;
-            lives -= 1;
+            if(health == 0)
+            {
+                // Revives player
+                health = 100;
+                shield = 100;
+                lives -= 1;
+                Console.WriteLine("You have been revived!");
+            }
             if(lives <= 0)
             {
                 Console.WriteLine("You have lost, press any key to exit.");
