@@ -22,10 +22,12 @@ namespace HPSystem
         static int level;
         static int xp;
         static string StarLine;
-        static int xpCost = 100;
+        static int xpCostBase;
+        static int xpCost;
 
         static void Main()
         {
+            xpCostBase = 100;
             UnitTestHealthSystem();
             UnitTestXPSystem();
             Console.WriteLine("Code test complete!");
@@ -193,6 +195,7 @@ namespace HPSystem
             }
             xp += EXPGain;
             Console.WriteLine(string.Format("You gained {0} xp!", EXPGain));
+            xpCost = xpCostBase * level;
             if(xp >= xpCost)
             {
                 level += 1;
